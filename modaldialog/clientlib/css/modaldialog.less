@@ -1,0 +1,120 @@
+@import (reference) "/apps/ncmec/clientlibs/global.less";
+
+@min-width: 200px;
+@max-width: 500px;
+
+@content-padding: 0;
+@background-color: @color-white;
+@border-color: @color-black;
+@border-width: 3px;
+//@border-radius: 14px;
+@border-radius: 0;
+@backdrop-color: ~"#000B";
+
+@closebutton-radius: 22px;
+@closebutton-width: ~"calc(@{closebutton-radius} * 2)";
+@closebutton-background-color: @color-black;
+@closebutton-color: @color-white;
+@closebutton-font-size: 30px;
+
+
+html[class*="aem-AuthorLayer-"] {
+	
+	.ncmec-modaldialog__closebutton {
+		display: none;
+	}
+	
+	.ncmec-modaldialog__content {
+		overflow: auto;
+		background: @background-color;
+		padding: @content-padding;
+		border: @border-width solid @border-color;
+		border-radius: @border-radius;
+	}
+}
+
+html:not([class*="aem-AuthorLayer-"]) {
+	
+	.ncmec-modaldialog {
+		padding: 0;
+		margin: auto;
+		overflow: visible;
+		background: none;
+		border: none;
+		
+		&::backdrop {
+			background: @backdrop-color;
+		}
+		
+		&__wrapper {
+			width: @max-width;
+			max-width: ~"calc(100vw - @{closebutton-width})";
+		}
+		
+		&__closebutton {
+			position: relative;
+			z-index: 2;
+			height: 0;
+			
+			button {
+				box-sizing: border-box;
+				position: absolute;
+				border-radius: 50%;
+				text-align: center;
+				cursor: pointer;
+				width: @closebutton-width;
+				height: @closebutton-width;
+				right: -@closebutton-radius;
+				top: -@closebutton-radius;
+				border: none;
+				background-color: @closebutton-background-color;
+				color: @closebutton-color;
+				font-weight: bold;
+				font-size: @closebutton-font-size;
+				line-height: 1;
+					
+				span:last-child {
+					/* visually hidden */
+					clip: rect(0 0 0 0);
+					clip-path: inset(50%);
+					height: 1px;
+					overflow: hidden;
+					position: absolute;
+					white-space: nowrap;
+					width: 1px;
+				}
+			}
+			
+			div {
+				position: absolute;
+				top: 0;
+				right: 0;
+				width: @closebutton-radius;
+				height: @closebutton-radius;
+				z-index: -1;
+				clip-path: border-box;
+				
+				&::before {
+					content: "";
+					display: block;
+					border-radius: 0 0 0 @closebutton-radius;
+					height: @closebutton-radius;
+					width: @closebutton-radius;
+					position: absolute;
+					top: 0;
+					right: 0;
+				}
+			}
+		}
+		
+		&__content {
+			overflow: auto;
+			min-width: @min-width;
+			max-height: ~"calc(100vh - @{closebutton-width})";
+			background: @background-color;
+			padding: @content-padding;
+			border: @border-width solid @border-color;
+			border-radius: @border-radius;
+		}
+	}
+}

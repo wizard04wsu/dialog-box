@@ -1,0 +1,18 @@
+<template data-sly-template.responsiveGrid="${ @ container}">
+	<dialog data-sly-element="${wcmmode.disabled ? '' : 'div'}"
+		id="${container.id}"
+		class="ncmec-modaldialog cmp-container"
+		aria-label="${container.accessibilityLabel}"
+		role="${container.roleAttribute}"
+		data-open-on-load="${properties.openOnLoad}"
+		data-close-on-backdrop-click="${properties.closeOnBackdropClick}">
+		<div class="ncmec-modaldialog__wrapper">
+			<div data-sly-test="${wcmmode.disabled || wcmmode.preview}"
+				class="ncmec-modaldialog__closebutton"><button type="button"><span aria-hidden="true">&#x2715;</span><span>Close</span></button><div></div></div>
+			<div class="ncmec-modaldialog__content"
+				style="${container.backgroundStyle @ context='styleString'}">
+				<sly data-sly-resource="${resource @ resourceType='wcm/foundation/components/responsivegrid'}"></sly>
+			</div>
+		</div>
+	</dialog>
+</template>

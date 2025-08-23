@@ -1,0 +1,133 @@
+@import (reference) "/apps/ncmec/clientlibs/global.less";
+
+// Class naming convention:
+//  .ncmec-style__<page element>[__<specific usage>[...]]__<style name>
+
+
+// ####################################################
+// NCMEC Modal Dialog
+// Style #1 - End of Year Donations
+// ####################################################
+
+@media (max-width: 550px) {
+	#ncmec-modaldialog-donate {
+		#ncmec-modaldialog-heading span {
+			font-size: 26px;
+			line-height: 1.25;
+		}
+	}
+}
+html:not([class*="aem-AuthorLayer-"]) .ncmec-style__modaldialog__donate,
+#ncmec-modaldialog-donate {
+	//TODO: The ID is temporary until editable templates and style sets are in use.
+	
+	.ncmec-modaldialog__content {
+		border-radius: 0;
+		padding: 0;
+		border: 4px solid @color-white;
+		
+		div:has(>#ncmec-modaldialog-donate-video) {
+			padding: 0 !important;
+			margin: 0 !important;
+			width: 100% !important;
+			
+			#ncmec-modaldialog-donate-video {
+				font-size: 0;
+				
+				iframe {
+					aspect-ratio: ~"calc(1200 / 720)";
+				}
+			}
+		}
+		
+		div:has(> #ncmec-modaldialog-heading),
+		div:has(> #ncmec-modaldialog-donate-button) {
+			&.col-lg-offset-1 {
+				margin-left: 0 !important;
+			}
+			&.col-lg-10 {
+				width: auto !important;
+			}
+		}
+		
+		.donate-btn-container > .btn {
+			white-space: nowrap;
+			//background: @color-blue-light;
+			background: rgb(146, 214, 227);
+			text-transform: none;
+			height: auto;
+			width: auto;
+			padding: 2px 0;
+			color: @color-blue-dark;
+			border: none;
+			border-radius: 0;
+			position: relative;
+			font-size: 24px !important;
+			line-height: 1.5;
+			
+			&:hover {
+				background: #caf7fc;
+			}
+			
+			&::before {
+				content: "";
+				aspect-ratio: 1 / 2;
+				height: 100%;
+				width: auto;
+				//background: @color-blue-light;
+				background: inherit;
+				position: absolute;
+				inset: 0 100% 0 auto;
+				border-top-left-radius: 100% 50%;
+				border-bottom-left-radius: 100% 50%;
+			}
+			
+			&::after {
+				content: "";
+				aspect-ratio: 1 / 2;
+				height: 100%;
+				width: auto;
+				//background: @color-blue-light;
+				background: inherit;
+				position: absolute;
+				inset: 0 auto 0 100%;
+				border-top-right-radius: 100% 50%;
+				border-bottom-right-radius: 100% 50%;
+			}
+		}
+	}
+}
+
+// ####################################################
+// NCMEC Modal Dialog
+// Style #2 - Shadow (out of date as of 2024-12-02)
+// ####################################################
+
+html:not([class*="aem-AuthorLayer-"]) .ncmec-style__modaldialog__shadow {
+	
+	@dropshadow-color-1: @color-yellow;
+	@dropshadow-color-2: ~"@{color-yellow}44";
+	@closebutton-radius: 22px;	/* if changed, would require additional variables to be changed */
+	@shadow-blur-radius: 12px;
+	@shadow-spread-radius: 4px;
+
+
+	.ncmec-modaldialog {
+		
+		&__wrapper {
+			filter: ~"drop-shadow(0 0 2px @{dropshadow-color-1}) drop-shadow(0 0 2px @{dropshadow-color-1}) drop-shadow(0 0 6px @{dropshadow-color-1}) drop-shadow(0 0 6px @{dropshadow-color-1}) drop-shadow(0 0 12px @{dropshadow-color-2})";
+		}
+
+		&__closebutton {
+			
+			div {
+				width: calc(@closebutton-radius + @shadow-blur-radius + @shadow-spread-radius);
+				height: calc(@closebutton-radius + @shadow-blur-radius + @shadow-spread-radius);
+				
+				&::before {
+					box-shadow: 0 0 @shadow-blur-radius @shadow-spread-radius @dropshadow-color-1;
+				}
+			}
+		}
+	}
+}
