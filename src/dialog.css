@@ -1,0 +1,32 @@
+:host {
+  /* Theme tokens authors can override */
+  --dlg-surface: Canvas;
+  --dlg-fg: CanvasText;
+  --dlg-backdrop: color-mix(in oklab, black 30%, transparent);
+  --dlg-minwidth: 22rem;
+  --dlg-minheight: auto;
+  color-scheme: light dark;
+  display: contents;
+}
+
+dialog {
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  min-width: min(var(--dlg-minwidth), 100vw) !important;
+  min-height: min(var(--dlg-minheight), 100vh) !important;
+
+  margin: auto;
+  border: 0;
+  padding: 0;
+  background: var(--dlg-surface);
+  color: var(--dlg-fg);
+
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.22);
+}
+
+dialog::backdrop {
+  background: var(--dlg-backdrop);
+}
+
+::slotted(*) { margin: 0; }

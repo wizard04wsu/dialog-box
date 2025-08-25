@@ -1,0 +1,56 @@
+{
+  "name": "@example/x-dialog",
+  "version": "0.3.0",
+  "description": "XDialog web component with external CSS (Option 2) and dev cache-busting.",
+  "type": "module",
+  "keywords": [
+    "web components",
+    "custom elements",
+    "dialog",
+    "shadow dom",
+    "ui"
+  ],
+  "author": "You",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/you/x-dialog.git"
+  },
+  "bugs": {
+    "url": "https://github.com/you/x-dialog/issues"
+  },
+  "homepage": "https://github.com/you/x-dialog#readme",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./define": {
+      "import": "./dist/define.js",
+      "default": "./dist/define.js",
+      "types": "./dist/define.d.ts"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "./dist/define.js"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "cross-env NODE_ENV=production tsup",
+    "postbuild": "shx cp src/dialog.css dist/dialog.css",
+    "dev": "cross-env NODE_ENV=development http-server -c-1 -p 5174 .",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.1",
+    "typescript": "^5.5.4",
+    "shx": "^0.3.4",
+    "cross-env": "^7.0.3"
+  }
+}
