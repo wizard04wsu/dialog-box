@@ -1,8 +1,8 @@
-import XDialog from './index.js';
+import DialogBox from './index.js';
 
-const tag = 'x-dialog';
+const tag = 'dialog-box';
 if (!customElements.get(tag)) {
-  customElements.define(tag, XDialog);
+  customElements.define(tag, DialogBox);
 }
 
-export { XDialog };
+export { DialogBox };

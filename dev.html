@@ -1,39 +1,47 @@
 <!doctype html>
+
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>x-dialog dev (Option 2 + cache-busting)</title>
-    <!-- In dev, tsup injects __DEV__ true; CSS URL has ?v=timestamp -->
-    <link rel="preload" as="style" href="./dist/dialog.css?v=DEV">
-    <style>
-      body { font: 16px/1.4 system-ui, sans-serif; padding: 2rem; }
-      .row { display: flex; gap: 1rem; flex-wrap: wrap; }
-      button { padding: .5rem .9rem; border-radius: .5rem; border: 1px solid #0002; }
-    </style>
-    <script type="module">
-      import './dist/define.js';
-      window.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('open').addEventListener('click', () => {
-          document.querySelector('x-dialog').open();
-        });
-      });
-    </script>
-  </head>
-  <body>
-    <h1>🧪 <code>&lt;x-dialog&gt;</code> dev (external CSS + cache-busting)</h1>
-    <div class="row">
-      <button id="open">Open dialog</button>
-    </div>
-    <x-dialog id="dlg" style="--dlg-surface: white; --dlg-fg: #222; --dlg-backdrop: rgba(0,0,0,.35)">
-      <h2 slot="title">Hello!</h2>
-      <div style="padding:1rem 1.25rem 1.25rem">
-        <p>This dialog loads CSS from a separate file. In dev it appends a cache-busting query param.</p>
-        <div class="row" style="margin-top:1rem">
-          <button type="button" onclick="document.querySelector('x-dialog').close()">Close</button>
-          <button type="button" style="background:rebeccapurple; color:white; border:0" onclick="alert('Action!')">Action</button>
-        </div>
-      </div>
-    </x-dialog>
-  </body>
+<head>
+	
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<title>dialog-box dev (external CSS + cache-busting)</title>
+	
+	<script type="module" src="./dist/define.js"></script>
+	<script>
+		window.addEventListener('DOMContentLoaded', () => {
+			document.getElementById('open').addEventListener('click', () => {
+				document.querySelector('dialog-box').open();
+			});
+		});
+	</script>
+	<link rel="preload" as="style" href="./dist/dialog-box.css">
+	
+	<style>
+		body { font: 16px/1.4 system-ui, sans-serif; padding: 2rem; }
+		.row { display: flex; gap: 1rem; flex-wrap: wrap; }
+		button { padding: .5rem .9rem; border-radius: .5rem; border: 1px solid #0002; }
+	</style>
+	
+</head>
+<body>
+	
+	<h1>🧪 <code>&lt;dialog-box&gt;</code> dev (external CSS + cache-busting)</h1>
+	
+	<div class="row">
+		<button id="open">Open dialog</button>
+	</div>
+	<dialog-box id="dlg" style="--dlg-surface: white; --dlg-fg: #222; --dlg-backdrop: rgba(0,0,0,.35)">
+		<h2 slot="title">Hello!</h2>
+		<div style="padding:1rem 1.25rem 1.25rem">
+			<p>This dialog loads CSS from a separate file. In dev it appends a cache-busting query param.</p>
+			<div class="row" style="margin-top:1rem">
+				<button type="button" onclick="document.querySelector('dialog-box').close()">Close</button>
+				<button type="button" style="background:rebeccapurple; color:white; border:0" onclick="alert('Action!')">Action</button>
+			</div>
+		</div>
+	</dialog-box>
+	
+</body>
 </html>

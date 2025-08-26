@@ -1,9 +1,9 @@
 
-# @example/x-dialog (Option 2: external CSS + dev cache-busting)
+# @example/dialog-box (external CSS + dev cache-busting)
 
-A minimal, structure-locked, themeable `<x-dialog>` web component.
+A minimal, structure-locked, themeable `<dialog-box>` web component.
 
-- Loads CSS from a separate file (`dialog.css`).
+- Loads CSS from a separate file (`dialog-box.css`).
 - In dev (`NODE_ENV=development`), tsup injects `__DEV__=true` → CSS URL gets `?v=timestamp` and `cache:'no-store'` to always fetch fresh styles.
 - In production, clean URLs and normal caching.
 
@@ -17,23 +17,15 @@ npm run build # builds with tsup, NODE_ENV=production
 ## Usage
 
 ```js
-import { XDialog } from '@example/x-dialog';
-customElements.define('x-dialog', XDialog);
+import { DialogBox } from '@example/dialog-box';
+customElements.define('dialog-box', DialogBox);
 ```
 
 Or auto-define:
 
 ```js
-import '@example/x-dialog/define';
+import '@example/dialog-box/define';
 ```
-
-On CDN:
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/@example/x-dialog/dist/define.global.js"></script>
-<x-dialog></x-dialog>
-```
-
 ## Dev preview
 
 ```bash
@@ -45,5 +37,5 @@ npm run dev
 
 ## Notes
 
-- Build copies `src/dialog.css` into `dist/dialog.css` via postbuild (shx cp).
+- Build copies `src/dialog-box.css` into `dist/dialog-box.css` via postbuild (shx cp).
 - Cache-busting only happens in dev mode.

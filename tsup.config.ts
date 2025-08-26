@@ -1,18 +1,18 @@
-import { defineConfig } from 'tsup'
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
+  clean: false,
+  define: {
+    __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
+  },
+  dts: true,
   entry: {
     index: 'src/index.ts',
     define: 'src/define.ts',
   },
-  format: ['esm', 'iife'],
-  globalName: 'XDialog',
-  dts: true,
-  target: 'es2022',
-  sourcemap: true,
-  clean: true,
+  format: ['esm'],
   minify: true,
-  define: {
-    __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
-  },
-})
+  sourcemap: false,
+  splitting: false,
+  target: 'es2022'
+});

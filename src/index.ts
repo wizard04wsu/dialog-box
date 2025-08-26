@@ -1,12 +1,12 @@
 /**
- * XDialog — structure-locked, themeable dialog that loads CSS from a separate file.
- * Option 2 with dev cache-busting: appends ?v=timestamp to CSS URL in dev mode.
+ * DialogBox — structure-locked, themeable dialog that loads CSS from a separate file.
+ * External CSS with dev cache-busting: appends ?v=timestamp to CSS URL in dev mode.
  */
 
 declare const __DEV__: boolean; // injected at build time
 
 const bust = __DEV__ ? `?v=${Date.now()}` : '';
-const cssURL = new URL(`./dialog.css${bust}`, import.meta.url);
+const cssURL = new URL(`./dialog-box.css${bust}`, import.meta.url);
 
 const styleAssetPromise: Promise<CSSStyleSheet | string> = (async () => {
   const res = await fetch(cssURL, { cache: __DEV__ ? 'no-store' : 'default' });
@@ -25,7 +25,7 @@ const styleAssetPromise: Promise<CSSStyleSheet | string> = (async () => {
   return cssText;
 })();
 
-export class XDialog extends HTMLElement {
+export class DialogBox extends HTMLElement {
   #root: ShadowRoot;
   #dialog!: HTMLDialogElement;
 
@@ -62,7 +62,7 @@ export class XDialog extends HTMLElement {
       this.setAttribute('data-ready', '');
       if (this.hasAttribute('open')) this.open();
     }).catch(err => {
-      console.error('[x-dialog] stylesheet failed:', err);
+      console.error('[dialog-box] stylesheet failed:', err);
       this.setAttribute('data-ready', '');
       if (this.hasAttribute('open')) this.open();
     });
@@ -84,4 +84,4 @@ export class XDialog extends HTMLElement {
   }
 }
 
-export default XDialog;
+export default DialogBox;
