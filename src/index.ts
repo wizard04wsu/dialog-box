@@ -38,11 +38,9 @@ export class DialogBox extends HTMLElement {
         :host(:not([data-ready])) { display: contents; }
         :host(:not([data-ready])) dialog { visibility: hidden; }
       </style>
-      <dialog part="dialog" role="dialog" aria-modal="true">
-        <slot>
-          <button type="button" formmethod="dialog">Close</button>
-        </slot>
-      </dialog>
+      <dialog part="dialog" role="dialog" aria-modal="true"><slot>
+        <button>Close</button>
+      </slot></dialog>
     `;
   }
 

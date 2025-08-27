@@ -22,9 +22,9 @@
   "homepage": "https://github.com/wizard04wsu/dialog-box#readme",
   "exports": {
     ".": {
-      "import": "./dist/dialog-box.js",
+      "import": "./dist/index.js",
       "types": "./dist/index.d.ts",
-      "default": "./dist/dialog-box.js"
+      "default": "./dist/index.js"
     },
     "./define": {
       "import": "./dist/define.js",
@@ -44,13 +44,15 @@
   "scripts": {
     "clean": "shx rm -rf dist && rm -rf wiki/docs",
     "copy:css": "shx mkdir -p dist && cp src/dialog-box.css dist/",
-    "dev:build:only": "cross-env NODE_ENV=development tsup --sourcemap",
-    "dev:build:watch": "cross-env NODE_ENV=development tsup --sourcemap --watch",
+    "dev:build:only": "cross-env NODE_ENV=development tsup",
+    "dev:build:watch": "cross-env NODE_ENV=development tsup --watch",
     "build:jsdoc": "jsdoc --destination wiki/docs --readme README.md dist",
     "dev:build": "run-s clean copy:css dev:build:only build:jsdoc",
     "dev:watch": "run-s dev:build dev:build:watch",
     "watch:css": "chokidar \"src/dialog-box.css\" -c \"npm run copy:css\"",
-    "dev:serve": "http-server -c-1 -p 5174 .",
+    "serve:http": "http-server -c-1 -p 5174 .",
+    "kill:port": "kill-port 5174",
+    "dev:serve": "run-s kill:port serve:http",
     "dev:live": "run-s dev:build && run-p dev:build:watch watch:css dev:serve",
     "prod:build:only": "cross-env NODE_ENV=production tsup",
     "prod:build": "run-s clean copy:css prod:build:only build:jsdoc",
@@ -61,6 +63,7 @@
     "chokidar-cli": "^3.0.0",
     "cross-env": "^7.0.3",
     "http-server": "^14.1.1",
+    "kill-port": "^2.0.1",
     "npm-run-all": "^4.1.5",
     "shx": "^0.3.4",
     "tsup": "^8.0.1",

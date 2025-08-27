@@ -1,32 +1,30 @@
 :host {
-  /* Theme tokens authors can override */
-  --dlg-surface: Canvas;
-  --dlg-fg: CanvasText;
-  --dlg-backdrop: color-mix(in oklab, black 30%, transparent);
-  --dlg-minwidth: 22rem;
-  --dlg-minheight: auto;
-  color-scheme: light dark;
-  display: contents;
+	--dlg-min-width: auto;
+	--dlg-min-height: auto;
+	
+	/* Don't render the component element itself; just its children (i.e., <dialog>) */
+	display: contents;
 }
 
 dialog {
-  max-width: 100vw !important;
-  max-height: 100vh !important;
-  min-width: min(var(--dlg-minwidth), 100vw) !important;
-  min-height: min(var(--dlg-minheight), 100vh) !important;
-
-  margin: auto;
-  border: 0;
-  padding: 0;
-  background: var(--dlg-surface);
-  color: var(--dlg-fg);
-
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.22);
+	/* Ensure that it is fully visible within the viewport. */
+	box-sizing: border-box;
+	max-width: 100vw;
+	max-height: 100vh;
+	min-width: min(var(--dlg-min-width), 100vw);
+	min-height: min(var(--dlg-min-height), 100vh);
+	
+	/* Center it in the viewport. */
+	margin: auto;
+	
+	background: Canvas;
+	color: CanvasText;
+	
+	border: 0;
+	border-radius: 12px;
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);
 }
 
 dialog::backdrop {
-  background: var(--dlg-backdrop);
+	background: color-mix(in oklab, black 30%, transparent);
 }
-
-::slotted(*) { margin: 0; }

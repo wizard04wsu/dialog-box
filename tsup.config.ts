@@ -11,7 +11,7 @@ export default defineConfig({
     define: 'src/define.ts',
   },
   format: ['esm'],
-  minify: true,
+  minify: (process.env.NODE_ENV === 'production'),
   sourcemap: false,
   splitting: false,
   target: 'es2022'
