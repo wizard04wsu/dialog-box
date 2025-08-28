@@ -42,21 +42,17 @@
     "LICENSE"
   ],
   "scripts": {
-    "clean": "shx rm -rf dist && rm -rf wiki/docs",
-    "copy:css": "shx mkdir -p dist && cp src/dialog-box.css dist/",
     "dev:build:only": "cross-env NODE_ENV=development tsup",
+    "prod:build:only": "cross-env NODE_ENV=production tsup",
     "dev:build:watch": "cross-env NODE_ENV=development tsup --watch",
     "build:jsdoc": "jsdoc --destination wiki/docs --readme README.md dist",
-    "dev:build": "run-s clean copy:css dev:build:only build:jsdoc",
-    "dev:watch": "run-s dev:build dev:build:watch",
-    "watch:css": "chokidar \"src/dialog-box.css\" -c \"npm run copy:css\"",
     "serve:http": "http-server -c-1 -p 5174 .",
     "kill:port": "kill-port 5174",
+    "dev:build": "run-s dev:build:only build:jsdoc",
+    "dev:watch": "run-s dev:build dev:build:watch",
     "dev:serve": "run-s kill:port serve:http",
-    "dev:live": "run-s dev:build && run-p dev:build:watch watch:css dev:serve",
-    "prod:build:only": "cross-env NODE_ENV=production tsup",
-    "prod:build": "run-s clean copy:css prod:build:only build:jsdoc",
-    "prepublishOnly": "npm run build"
+    "dev:live": "run-s dev:build && run-p dev:build:watch dev:serve",
+    "prod:build": "run-s prod:build:only build:jsdoc"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",

@@ -5,4 +5,4 @@ if (!customElements.get(tag)) {
   customElements.define(tag, DialogBox);
 }
 
-export { DialogBox };
+export { DialogBox as default, DialogBox };
