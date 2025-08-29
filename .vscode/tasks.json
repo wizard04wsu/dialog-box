@@ -32,7 +32,7 @@
 			"detail": "Host development, static, with cache-busting, at http://localhost:5174/."
 		},
 		{
-			"label": "Dev: Build, Host Live",
+			"label": "Dev: Build, Host Live on 5174",
 			"type": "npm",
 			"script": "dev:live",
 			"group": "build",
