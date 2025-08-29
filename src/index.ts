@@ -40,11 +40,20 @@ export class DialogBox extends HTMLElement {
 	
 	get open(): boolean { return this.#dialog.open; }
 	
-	private openDialog(modal: boolean = true): void {
+	private openDialog(modal: boolean = true, closedBy?: string): void {
 		
 		if (this.#dialog?.isConnected && !this.#dialog.open) {
 			// The dialog is in the DOM and is closed.
 			
+			if (closedBy && ['any', 'closerequest', 'none'].includes(closedBy)) {
+				this.#dialog.closedBy = closedBy;
+			}
+			else {
+				this.#dialog.closedBy = modal ? 'closerequest' :  'none';
+			}
+
+			this.#dialog.ariaModal = ''+modal;
+
 			// Open the dialog.
 			modal ? this.#dialog.showModal() : this.#dialog.show();
 		}
