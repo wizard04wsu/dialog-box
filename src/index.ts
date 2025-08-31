@@ -44,13 +44,11 @@ export class DialogBox extends HTMLElement {
 		
 		this.#dialog = this.#root.querySelector('dialog')!;
 		
-		const dialogEvents = ['close', 'cancel'];
-		
 		// Forward `close` and `cancel` events to the host.
-		for (const type of dialogEvents) {
+		for (const type of ['close', 'cancel']) {
 			this.#dialog.addEventListener(type, (event) => {
 				if (event.target !== this.#dialog) return;
-				this.dispatchEvent(event);
+				this.dispatchEvent(new Event(type, { ...event, composed: true }));
 			});
 		}
 	}

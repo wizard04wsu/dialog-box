@@ -1,3 +1,6 @@
-<dialog part="dialog" role="dialog" aria-modal="true"><slot>
-	<button>Close</button>
-</slot></dialog>
+<dialog role="dialog">
+	<div id="overlay" part="backdrop"></div>
+	<div id="box" part="dialog"><slot>
+		<button>Close</button>
+	</slot></div>
+</dialog>
