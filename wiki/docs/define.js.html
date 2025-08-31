@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: define.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: define.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// src/dialog-box.css
+var dialog_box_default = ":host {\n	--dlg-min-width: auto;\n	--dlg-min-height: auto;\n	\n	/* Don't render the component element itself; just its children (i.e., &lt;dialog>) */\n	display: contents;\n}\n\n:root > dialog {\n	/* Ensure that it is fully visible within the viewport. */\n	box-sizing: border-box;\n	max-width: 100vw;\n	max-height: 100vh;\n	min-width: min(var(--dlg-min-width), 100vw);\n	min-height: min(var(--dlg-min-height), 100vh);\n	\n	/* Center it in the viewport. */\n	margin: auto;\n	\n	background: Canvas;\n	color: CanvasText;\n	\n	border: 0;\n	border-radius: 12px;\n	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);\n}\n\n:root > dialog::backdrop {\n	background: color-mix(in oklab, black 30%, transparent);\n}\n";
+
+// src/dialog-box.html
+var dialog_box_default2 = '&lt;dialog part="dialog" role="dialog" aria-modal="true">&lt;slot>\r\n	&lt;button>Close&lt;/button>\r\n&lt;/slot>&lt;/dialog>\r\n';
+
+// src/index.ts
+var DialogBox = class extends HTMLElement {
+  #root;
+  #dialog;
+  #modal = true;
+  #inDOM = false;
+  #isOpen = false;
+  #openedAsModal = false;
+  constructor(modal = true) {
+    super();
+    this.#modal = modal;
+    this.#root = this.attachShadow({ mode: "open" });
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(dialog_box_default);
+    this.#root.adoptedStyleSheets.push(sheet);
+    this.#root.innerHTML = dialog_box_default2;
+  }
+  connectedCallback() {
+    this.#inDOM = true;
+    this.#dialog = this.#root.querySelector("dialog");
+    for (const type of ["close", "cancel"]) {
+      this.#dialog.addEventListener(type, (event) => {
+        if (event.target !== this.#dialog) return;
+        this.dispatchEvent(event);
+      });
+    }
+  }
+  disconnectedCallback() {
+    this.#inDOM = false;
+  }
+  connectedMoveCallback() {
+  }
+  /**
+   * A string representing the return value of the dialog box when it's closed.
+   *
+   * @type {(string | void)}
+   * @memberof DialogBox
+   */
+  get returnValue() {
+    return this.#dialog.returnValue;
+  }
+  set returnValue(value) {
+    this.#dialog.returnValue = "" + value;
+  }
+  /**
+   * Whether the dialog box is modal by default.
+   *
+   * @type {boolean}
+   * @memberof DialogBox
+   */
+  get modal() {
+    return this.#modal;
+  }
+  set modal(value) {
+    this.#modal = !!value;
+  }
+  /**
+   * Whether the dialog box is currently open.
+   *
+   * @readonly
+   * @type {boolean}
+   * @memberof DialogBox
+   */
+  get isOpen() {
+    return this.#isOpen;
+  }
+  /**
+   * Whether the dialog box is currently open and is modal.
+   *
+   * @readonly
+   * @type {boolean}
+   * @memberof DialogBox
+   */
+  get isOpenModal() {
+    return this.isOpen &amp;&amp; this.#openedAsModal;
+  }
+  /**
+   * Open the dialog box, non-modal.
+   */
+  show() {
+    if (!this.#inDOM || this.#isOpen) return;
+    this.#dialog.ariaModal = "false";
+    this.#isOpen = true;
+    this.#openedAsModal = false;
+    this.#dialog.show();
+  }
+  /**
+   * Open the dialog box, modal.
+   * 
+   * @param {Function} [outsideEventCallback] - Callback to handle an event on the backdrop, outside of the dialog box.
+   */
+  showModal(outsideEventCallback) {
+    if (!this.#inDOM || this.#isOpen) return;
+    this.#dialog.ariaModal = "true";
+    if (outsideEventCallback instanceof Function) {
+      const types = ["click", "mousedown", "mouseup"];
+      for (const type of types) {
+        this.#dialog.addEventListener(type, (event) => {
+          if (event.target !== this.#dialog) return;
+          if (!(event instanceof MouseEvent)) return;
+          const rect = this.#dialog.getBoundingClientRect();
+          const insideDialog = event.clientX >= rect.left &amp;&amp; event.clientX &lt;= rect.right &amp;&amp; event.clientY >= rect.top &amp;&amp; event.clientY &lt;= rect.bottom;
+          if (!insideDialog) {
+            outsideEventCallback(event);
+          }
+        });
+      }
+    }
+    this.#isOpen = true;
+    this.#openedAsModal = true;
+    this.#dialog.showModal();
+  }
+  /**
+   * Close the dialog box.
+   * The `close` event is not cancelable.
+   * 
+   * @param {string} [returnValue] - An updated value for the dialog box's `returnValue` property.
+   */
+  close(returnValue) {
+    if (!this.#isOpen) return;
+    this.#isOpen = false;
+    this.#dialog.close(returnValue);
+  }
+  /**
+   * Request closure of the dialog box.
+   * A `cancel` event (cancelable) is fired before the `close` event.
+   * 
+   * @param {string} [returnValue] - An updated value for the dialog box's `returnValue` property.
+   */
+  requestClose(returnValue) {
+    if (!this.#isOpen) return;
+    this.#dialog.addEventListener("close", (event) => {
+      this.#isOpen = false;
+    });
+    this.#dialog.requestClose(returnValue);
+  }
+};
+var src_default = DialogBox;
+
+// src/define.ts
+var tag = "dialog-box";
+if (!customElements.get(tag)) {
+  customElements.define(tag, src_default);
+}
+export {
+  src_default as DialogBox,
+  src_default as default
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 18:10:23 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
