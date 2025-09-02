@@ -16,9 +16,9 @@ export class DialogBox extends HTMLElement {
 	#root: ShadowRoot;
 	#dialog!: HTMLDialogElement;
 	
-	#inDOM?: boolean = false;
-	#isOpen?: boolean = false;
-	#openedAsModal?: boolean = false;
+	#inDOM: boolean = false;
+	#isOpen: boolean = false;
+	#openedAsModal: boolean = false;
 	
 	constructor() {
 		
@@ -84,7 +84,7 @@ export class DialogBox extends HTMLElement {
 	 * @type {boolean}
 	 * @memberof DialogBox
 	 */
-	get isOpen(): boolean { return this.#isOpen!; }
+	get isOpen(): boolean { return this.#isOpen; }
 	
 	
 	/**
@@ -94,7 +94,7 @@ export class DialogBox extends HTMLElement {
 	 * @type {boolean}
 	 * @memberof DialogBox
 	 */
-	get isOpenModal(): boolean { return this.isOpen && this.#openedAsModal!; }
+	get isModal(): boolean { return this.isOpen && this.#openedAsModal; }
 	
 	
 	/**
