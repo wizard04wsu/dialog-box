@@ -1,0 +1,59 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Install Dependencies",
+			"type": "shell",
+			"command": "npm install"
+		},
+		{
+			"label": "Dev: Build",
+			"type": "npm",
+			"script": "dev:build",
+			"group": "build",
+			"presentation": {
+				"clear": true,
+				"reveal": "silent",
+				"showReuseMessage": false
+			},
+			"detail": "Build development with source maps."
+		},
+		{
+			"label": "Dev: Host",
+			"type": "npm",
+			"script": "dev:serve",
+			"presentation": {
+				"clear": true,
+				"reveal": "silent",
+				"showReuseMessage": false
+			},
+			"detail": "Host development, static, with cache-busting, at http://localhost:5174/."
+		},
+		{
+			"label": "Dev: Build, Host Live on 5174",
+			"type": "npm",
+			"script": "dev:live",
+			"group": "build",
+			"presentation": {
+				"clear": true,
+				"reveal": "silent",
+				"showReuseMessage": false
+			},
+			"detail": "Host development, with live changes and cache-busting, at http://localhost:5174/."
+		},
+		{
+			"label": "Prod: Build",
+			"type": "npm",
+			"script": "prod:build",
+			"group": "build",
+			"presentation": {
+				"clear": true,
+				"reveal": "silent",
+				"showReuseMessage": false
+			},
+			"detail": "Build production. No source maps or cache-busting."
+		}
+	]
+}

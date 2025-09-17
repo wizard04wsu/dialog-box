@@ -1,0 +1,69 @@
+{
+  "name": "@example/dialog-box",
+  "version": "0.3.0",
+  "description": "Dialog Box web component with external CSS and dev cache-busting.",
+  "type": "module",
+  "keywords": [
+    "web components",
+    "custom elements",
+    "dialog",
+    "shadow dom",
+    "ui"
+  ],
+  "author": "Andy Harrison",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wizard04wsu/dialog-box.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wizard04wsu/dialog-box/issues"
+  },
+  "homepage": "https://github.com/wizard04wsu/dialog-box#readme",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./define": {
+      "import": "./dist/define.js",
+      "types": "./dist/define.d.ts",
+      "default": "./dist/define.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "./dist/define.js"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev:build:only": "cross-env NODE_ENV=development tsup",
+    "prod:build:only": "cross-env NODE_ENV=production tsup",
+    "dev:build:watch": "cross-env NODE_ENV=development tsup --watch",
+    "build:jsdoc": "jsdoc --destination wiki/docs --readme README.md dist",
+    "serve:http": "http-server -c-1 -p 5174 .",
+    "kill:port": "kill-port 5174",
+    "dev:build": "run-s dev:build:only build:jsdoc",
+    "dev:watch": "run-s dev:build dev:build:watch",
+    "dev:serve": "run-s kill:port serve:http",
+    "dev:live": "run-s dev:build && run-p dev:build:watch dev:serve",
+    "prod:build": "run-s prod:build:only build:jsdoc"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "chokidar-cli": "^3.0.0",
+    "cross-env": "^7.0.3",
+    "http-server": "^14.1.1",
+    "jsdoc": "^4.0.4",
+    "kill-port": "^2.0.1",
+    "npm-run-all": "^4.1.5",
+    "shx": "^0.3.4",
+    "tsup": "^8.0.1",
+    "typescript": "^5.5.4"
+  }
+}

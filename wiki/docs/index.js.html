@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// src/dialog-box.css
+var dialog_box_default = ":host {\n	/* Don't render the component element itself; just its children (i.e., &lt;dialog>) */\n	display: contents !important;\n}\n\ndialog {\n	all: initial;\n	display: none;\n}\ndialog[open] {\n	display: block;\n	width: 100vw;\n	height: 100vh;\n}\n\ndialog::backdrop {\n	display: none;\n}\n\n#overlay {\n	position: fixed !important;\n	\n	/* Cover the entire viewport. */\n	inset: 0 0 0 0 !important;\n	width: 100vw !important;\n	height: 100vh !important;\n	box-sizing: border-box !important;\n	\n	background: color-mix(in oklab, black 30%, transparent);\n}\ndialog:not(.modal) > #overlay {\n	display: none;\n}\n\n#box {\n	position: relative !important;\n	\n	/* Ensure that the dimensions are no larger than the viewport. */\n	box-sizing: border-box !important;\n	max-width: 100vw !important;\n	max-height: 100vh !important;\n}\n#content {\n	min-width: min(0px, 100vw);\n	min-height: min(0px, 100vh);\n	width: fit-content;\n	height: fit-content;\n	\n	/* Center it in the viewport. */\n	margin: 50vh auto auto;\n	transform: translateY(-50%);\n	\n	background: Canvas;\n	color: CanvasText;\n	\n	border: 0;\n	border-radius: 12px;\n	box-shadow: 0 0 40px 10px rgba(0, 0, 0, 0.22);\n	\n	padding: 1em;\n}\n";
+
+// src/dialog-box.html
+var dialog_box_default2 = '&lt;dialog role="dialog">\n	&lt;div id="overlay" part="backdrop">&lt;/div>\n	&lt;div id="box">&lt;div id="content" part="dialog">&lt;slot>\n		&lt;button>Close&lt;/button>\n	&lt;/slot>&lt;/div>&lt;/div>\n&lt;/dialog>\n';
+
+// src/index.ts
+var outsideEventTypes = ["click", "mousedown", "mouseup"];
+var DialogBox = class extends HTMLElement {
+  #root;
+  #dialog;
+  #inDOM = false;
+  #isOpen = false;
+  #openedAsModal = false;
+  constructor() {
+    super();
+    this.#root = this.attachShadow({ mode: "open" });
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(dialog_box_default);
+    this.#root.adoptedStyleSheets.push(sheet);
+    this.#root.innerHTML = dialog_box_default2;
+  }
+  connectedCallback() {
+    this.#inDOM = true;
+    if (this.#dialog) return;
+    this.#dialog = this.#root.querySelector("dialog");
+    for (const type of ["close", "cancel"]) {
+      this.#dialog.addEventListener(type, (event) => {
+        if (event.target !== this.#dialog) return;
+        this.dispatchEvent(new Event(type, { ...event, composed: true }));
+      });
+    }
+  }
+  disconnectedCallback() {
+    this.#inDOM = false;
+  }
+  connectedMoveCallback() {
+  }
+  /**
+   * A string representing the return value of the dialog box when it's closed.
+   *
+   * @type {(string | void)}
+   * @memberof DialogBox
+   */
+  get returnValue() {
+    return this.#dialog.returnValue;
+  }
+  set returnValue(value) {
+    this.#dialog.returnValue = "" + value;
+  }
+  /**
+   * Whether the dialog box is currently open.
+   *
+   * @readonly
+   * @type {boolean}
+   * @memberof DialogBox
+   */
+  get isOpen() {
+    return this.#isOpen;
+  }
+  /**
+   * Whether the dialog box is currently open and is modal.
+   *
+   * @readonly
+   * @type {boolean}
+   * @memberof DialogBox
+   */
+  get isModal() {
+    return this.#isOpen &amp;&amp; this.#openedAsModal;
+  }
+  /**
+   * Open the dialog box, non-modal.
+   */
+  show() {
+    if (!this.#inDOM || this.#isOpen) return;
+    this.#dialog.ariaModal = "false";
+    this.#isOpen = true;
+    this.#openedAsModal = false;
+    this.#dialog.show();
+  }
+  /**
+   * Open the dialog box, modal.
+   * 
+   * @param {Function} [outsideEventCallback] - Callback to handle an event on the backdrop, outside of the dialog box.
+   */
+  showModal(outsideEventCallback) {
+    if (!this.#inDOM || this.#isOpen) return;
+    this.#dialog.ariaModal = "true";
+    if (outsideEventCallback instanceof Function) {
+      for (const type of outsideEventTypes) {
+        this.#dialog.addEventListener(type, (event) => {
+          if (event.target !== this.#dialog) return;
+          if (!(event instanceof MouseEvent)) return;
+          const rect = this.#dialog.getBoundingClientRect();
+          const insideDialog = event.clientX >= rect.left &amp;&amp; event.clientX &lt;= rect.right &amp;&amp; event.clientY >= rect.top &amp;&amp; event.clientY &lt;= rect.bottom;
+          if (!insideDialog) {
+            outsideEventCallback(event);
+          }
+        });
+      }
+    }
+    this.#isOpen = true;
+    this.#openedAsModal = true;
+    this.#dialog.classList.add("modal");
+    this.#dialog.showModal();
+  }
+  /**
+   * Close the dialog box.
+   * The `close` event is not cancelable.
+   * 
+   * @param {string} [returnValue] - An updated value for the dialog box's `returnValue` property.
+   */
+  close(returnValue) {
+    if (!this.#isOpen) return;
+    this.#isOpen = false;
+    this.#dialog.classList.remove("modal");
+    this.#dialog.close(returnValue);
+  }
+  /**
+   * Request closure of the dialog box.
+   * A `cancel` event (cancelable) is fired before the `close` event.
+   * 
+   * @param {string} [returnValue] - An updated value for the dialog box's `returnValue` property.
+   */
+  requestClose(returnValue) {
+    if (!this.#isOpen) return;
+    this.#dialog.addEventListener("close", (event) => {
+      this.#isOpen = false;
+      this.#dialog.classList.remove("modal");
+    });
+    this.#dialog.requestClose(returnValue);
+  }
+};
+var src_default = DialogBox;
+export {
+  DialogBox,
+  src_default as default
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Sep 17 2025 16:12:39 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

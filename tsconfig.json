@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2020",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "moduleResolution": "Bundler",
+    "declaration": true,
+    "declarationDir": "./dist",
+    "strict": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "types": []
+  },
+  "include": [
+    "src",
+    "dev.html"
+  ]
+}
