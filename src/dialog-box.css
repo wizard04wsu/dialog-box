@@ -28,6 +28,9 @@ dialog::backdrop {
 	
 	background: color-mix(in oklab, black 30%, transparent);
 }
+dialog:not(.modal) > #overlay {
+	display: none;
+}
 
 #box {
 	position: relative !important;

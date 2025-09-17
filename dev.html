@@ -6,7 +6,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	
-	<title>dialog-box dev (external CSS + cache-busting)</title>
+	<title>dialog-box custom element test</title>
 	
 	<script type="module" src="./dist/define.js"></script>
 	<script>
@@ -14,23 +14,34 @@
 			document.getElementById('open').addEventListener('click', () => {
 				document.querySelector('dialog-box').showModal();
 			});
+			document.getElementById('open2').addEventListener('click', () => {
+				document.querySelector('dialog-box').show();
+			});
 		});
 	</script>
 	
 	<style>
 		body { font: 16px/1.4 system-ui, sans-serif; padding: 2rem; }
 		button { padding: .5rem .9rem; border-radius: .5rem; border: 1px solid #0002; cursor: pointer; }
+		dialog-box::part(dialog) { border: 3px solid #000; }
+		dialog-box::part(backdrop) { background: #8004; }
 	</style>
 	
 </head>
 <body>
 	
-	<h1>🧪 <code>&lt;dialog-box&gt;</code> dev (external CSS + cache-busting)</h1>
+	<h1>🧪 <code>&lt;dialog-box&gt;</code> Custom Element Test</h1>
 	
-	<button id="open">Open dialog</button>
+	<button id="open">Open modal dialog</button>
+	<button id="open2">Open non-modal dialog</button>
+
 	<dialog-box id="dlg">
 		<button type="button" onclick="document.querySelector('dialog-box').close()">Close</button>
 		<button type="button" style="background:rebeccapurple; color:white; border:0" onclick="alert('Action!')">Action</button>
+	</dialog-box>
+	
+	<dialog-box id="dlg2">
+		<button type="button" onclick="document.querySelector('dialog-box').close()">Close</button>
 	</dialog-box>
 	
 </body>

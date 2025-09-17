@@ -94,7 +94,7 @@ export class DialogBox extends HTMLElement {
 	 * @type {boolean}
 	 * @memberof DialogBox
 	 */
-	get isModal(): boolean { return this.isOpen && this.#openedAsModal; }
+	get isModal(): boolean { return this.#isOpen && this.#openedAsModal; }
 	
 	
 	/**
@@ -146,6 +146,7 @@ export class DialogBox extends HTMLElement {
 		
 		this.#isOpen = true;
 		this.#openedAsModal = true;
+		this.#dialog.classList.add('modal');
 		this.#dialog.showModal();
 	}
 	
@@ -160,6 +161,7 @@ export class DialogBox extends HTMLElement {
 		if (!this.#isOpen) return;
 		
 		this.#isOpen = false;
+		this.#dialog.classList.remove('modal');
 		this.#dialog.close(returnValue);
 	}
 	
@@ -173,7 +175,10 @@ export class DialogBox extends HTMLElement {
 	requestClose(returnValue?: string | any): void {
 		if (!this.#isOpen) return;
 		
-		this.#dialog.addEventListener('close', (event) => { this.#isOpen = false; });
+		this.#dialog.addEventListener('close', (event) => {
+			this.#isOpen = false;
+			this.#dialog.classList.remove('modal');
+		});
 		this.#dialog.requestClose(returnValue);
 	}
 }
