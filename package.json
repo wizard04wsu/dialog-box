@@ -1,5 +1,5 @@
 {
-  "name": "@example/dialog-box",
+  "name": "dialog-box",
   "version": "0.3.0",
   "description": "Dialog Box web component with external CSS and dev cache-busting.",
   "type": "module",
@@ -26,38 +26,31 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./define": {
-      "import": "./dist/define.js",
-      "types": "./dist/define.d.ts",
-      "default": "./dist/define.js"
+    "./dialog-box": {
+      "import": "./dist/dialogBox.js",
+      "types": "./dist/dialogBox.d.ts",
+      "default": "./dist/dialogBox.js"
     }
   },
   "types": "./dist/index.d.ts",
-  "sideEffects": [
-    "./dist/define.js"
-  ],
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "dev:build:only": "cross-env NODE_ENV=development tsup",
-    "prod:build:only": "cross-env NODE_ENV=production tsup",
-    "dev:build:watch": "cross-env NODE_ENV=development tsup --watch",
+    "build:tsup": "cross-env tsup",
     "build:jsdoc": "jsdoc --destination wiki/docs --readme README.md dist",
-    "serve:http": "http-server -c-1 -p 5174 .",
+    "build:all": "run-s build:tsup build:jsdoc",
     "kill:port": "kill-port 5174",
-    "dev:build": "run-s dev:build:only build:jsdoc",
-    "dev:watch": "run-s dev:build dev:build:watch",
-    "dev:serve": "run-s kill:port serve:http",
-    "dev:live": "run-s dev:build && run-p dev:build:watch dev:serve",
-    "prod:build": "run-s prod:build:only build:jsdoc"
+    "serve:http": "http-server -c-1 -p 5174 .",
+    "dev:serve": "run-s kill:port serve:http"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
     "chokidar-cli": "^3.0.0",
     "cross-env": "^7.0.3",
+    "html-minifier-terser": "^7.2.0",
     "http-server": "^14.1.1",
     "jsdoc": "^4.0.4",
     "kill-port": "^2.0.1",

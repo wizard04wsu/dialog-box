@@ -1,12 +1,9 @@
 /**
  * DialogBox — structure-locked, themeable dialog that loads CSS from a separate file.
- * External CSS with dev cache-busting: appends ?v=timestamp to CSS URL in dev mode.
  */
 
-declare const __DEV__: boolean; // True unless in production. (Injected at build time.)
-
-import cssText from './dialog-box.css';
-import htmlText from './dialog-box.html';
+import cssText from './dialog-box.css?minify';
+import htmlText from './dialog-box.html?minify';
 
 // Event types to watch for on the backdrop that should be forwarded to the host element.
 const outsideEventTypes = ['click', 'mousedown', 'mouseup'];
@@ -17,8 +14,9 @@ export class DialogBox extends HTMLElement {
 	#dialog!: HTMLDialogElement;
 	
 	#inDOM: boolean = false;
-	#isOpen: boolean = false;
 	#openedAsModal: boolean = false;
+	
+	#isOpen: boolean = false;
 	
 	constructor() {
 		
