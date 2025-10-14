@@ -6,22 +6,25 @@
 		{
 			"label": "Install Dependencies",
 			"type": "shell",
-			"command": "npm install"
+			"command": "npm install",
+			"icon": {
+				"id": "cloud-download",
+				"color": "charts.blue"
+			}
 		},
 		{
-			"label": "Dev: Build",
+			"label": "Build",
 			"type": "npm",
-			"script": "dev:build",
+			"script": "build:all",
 			"group": "build",
 			"presentation": {
 				"clear": true,
 				"reveal": "silent",
 				"showReuseMessage": false
-			},
-			"detail": "Build development with source maps."
+			}
 		},
 		{
-			"label": "Dev: Host",
+			"label": "Host on 5174",
 			"type": "npm",
 			"script": "dev:serve",
 			"presentation": {
@@ -29,31 +32,11 @@
 				"reveal": "silent",
 				"showReuseMessage": false
 			},
-			"detail": "Host development, static, with cache-busting, at http://localhost:5174/."
-		},
-		{
-			"label": "Dev: Build, Host Live on 5174",
-			"type": "npm",
-			"script": "dev:live",
-			"group": "build",
-			"presentation": {
-				"clear": true,
-				"reveal": "silent",
-				"showReuseMessage": false
+			"icon": {
+				"id": "globe",
+				"color": "terminal.ansiCyan"
 			},
-			"detail": "Host development, with live changes and cache-busting, at http://localhost:5174/."
-		},
-		{
-			"label": "Prod: Build",
-			"type": "npm",
-			"script": "prod:build",
-			"group": "build",
-			"presentation": {
-				"clear": true,
-				"reveal": "silent",
-				"showReuseMessage": false
-			},
-			"detail": "Build production. No source maps or cache-busting."
+			"detail": "Host at http://localhost:5174/."
 		}
 	]
 }
