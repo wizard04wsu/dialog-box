@@ -24,7 +24,7 @@ customElements.define('dialog-box', DialogBox);
 Or auto-define:
 
 ```js
-import '@example/dialog-box/dialogBox';
+import '@example/dialog-box/dialog-box';
 ```
 ## Dev preview
 

@@ -2,6 +2,8 @@
  * DialogBox — structure-locked, themeable dialog that loads CSS from a separate file.
  */
 
+const TAGNAME = 'dialog-box';
+
 import cssText from './dialog-box.css?minify';
 import htmlText from './dialog-box.html?minify';
 
@@ -62,6 +64,25 @@ export class DialogBox extends HTMLElement {
 		// This is called *instead* of `disconnectedCallback()` and `connectedCallback()`.
 		
 		// Do nothing.
+	}
+	
+	
+	static registerTagName(tagName?: string) {
+		
+		tagName = tagName || TAGNAME;
+		
+		let elem = customElements.get(tagName)
+		if (!elem) {
+			customElements.define(tagName, DialogBox);
+		}
+		else if(!(elem instanceof DialogBox)) {
+			let codeStyle = 'font-family:monospace; background:#DDD; padding:0.5em 0;';
+			console.error(`The <${tagName}> tag is already in use. Initialize the custom element using a different tag name:
+	%cDialogBox.registerTagName(%ctagName%c)`,
+				codeStyle+'border-radius:0.5em 0 0 0.5em;padding-left:0.5em;',
+				codeStyle+'font-style:italic;padding:0.5em 0;',
+				codeStyle+'border-radius:0 0.5em 0.5em 0;padding-right:0.5em;');
+		}
 	}
 	
 	

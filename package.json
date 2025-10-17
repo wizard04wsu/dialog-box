@@ -27,9 +27,9 @@
       "default": "./dist/index.js"
     },
     "./dialog-box": {
-      "import": "./dist/dialogBox.js",
-      "types": "./dist/dialogBox.d.ts",
-      "default": "./dist/dialogBox.js"
+      "import": "./dist/dialog-box.js",
+      "types": "./dist/dialog-box.d.ts",
+      "default": "./dist/dialog-box.js"
     }
   },
   "types": "./dist/index.d.ts",

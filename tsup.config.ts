@@ -90,7 +90,7 @@ export default defineConfig([
     dts: true,
     entry: {
       index: 'src/index.ts',  // The DialogBox module. The tag name must still be defined.
-      dialogBox: 'src/dialog-box.ts',  // The DialogBox module, defined as the <dialog-box> custom element.
+      'dialog-box': 'src/dialog-box.ts',  // The DialogBox module, defined as the <dialog-box> custom element.
     },
     format: ['esm'],
     injectStyle: false,
@@ -119,7 +119,7 @@ export default defineConfig([
     dts: true,
     entry: {
       index: 'src/index.ts',  // The DialogBox module. The tag name must still be defined.
-      dialogBox: 'src/dialog-box.ts',  // The DialogBox module, defined as the <dialog-box> custom element.
+      'dialog-box': 'src/dialog-box.ts',  // The DialogBox module, defined as the <dialog-box> custom element.
     },
     format: ['esm'],
     injectStyle: false,
