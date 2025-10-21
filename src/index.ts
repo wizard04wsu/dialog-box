@@ -79,18 +79,29 @@ export class DialogBox extends HTMLElement {
 		
 		tagName = tagName || TAGNAME;
 		
-		let elem = customElements.get(tagName)
-		if (!elem) {
-			customElements.define(tagName, DialogBox);
+		const name = window.customElements.getName(DialogBox);
+		if (!name) {
+			// No custom element is already defined for this class.
+			
+			const constructorFn = window.customElements.get(tagName);
+			if (!constructorFn) {
+				// No custom element is already defined with this tag name.
+				
+				try {
+					// Define the custom element.
+					window.customElements.define(tagName, DialogBox);
+				} catch(e) {
+					throw new Error(`'${tagName}' is not a valid tag name for a custom element`, { cause: e });
+				}
+			}
+			else {
+				throw new Error(`A custom element with tag name '${tagName}' is already defined for class '${constructorFn.name}'`);
+			}
 		}
-		else if(!(elem instanceof DialogBox)) {
-			let codeStyle = 'font-family:monospace; background:#DDD; padding:0.5em 0;';
-			console.error(`The <${tagName}> tag is already in use. Initialize the custom element using a different tag name:
-	%cDialogBox.registerTagName(%ctagName%c)`,
-				codeStyle+'border-radius:0.5em 0 0 0.5em;padding-left:0.5em;',
-				codeStyle+'font-style:italic;padding:0.5em 0;',
-				codeStyle+'border-radius:0 0.5em 0.5em 0;padding-right:0.5em;');
+		else if(name !== tagName) {
+			throw new Error(`A custom element with tag name '${name}' is already defined for class '${DialogBox.name}'`);
 		}
+		// else, it's already defined.
 	}
 	
 	
