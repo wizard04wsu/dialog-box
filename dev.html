@@ -12,10 +12,10 @@
 	<script>
 		window.addEventListener('DOMContentLoaded', () => {
 			document.getElementById('open').addEventListener('click', () => {
-				document.querySelector('dialog-box').showModal();
+				document.querySelector('#dlg').showModal();
 			});
 			document.getElementById('open2').addEventListener('click', () => {
-				document.querySelector('dialog-box').show();
+				document.querySelector('#dlg2').show();
 			});
 		});
 	</script>
@@ -36,12 +36,12 @@
 	<button id="open2">Open non-modal dialog</button>
 
 	<dialog-box id="dlg">
-		<button type="button" onclick="document.querySelector('dialog-box').close()">Close</button>
+		<button type="button" onclick="this.parentNode.close()">Close</button>
 		<button type="button" style="background:rebeccapurple; color:white; border:0" onclick="alert('Action!')">Action</button>
 	</dialog-box>
 	
 	<dialog-box id="dlg2">
-		<button type="button" onclick="document.querySelector('dialog-box').close()">Close</button>
+		<button type="button" onclick="this.parentNode.close()">Close</button>
 	</dialog-box>
 	
 </body>

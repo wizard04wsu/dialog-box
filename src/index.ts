@@ -44,12 +44,20 @@ export class DialogBox extends HTMLElement {
 		
 		this.#dialog = this.#root.querySelector('dialog')!;
 		
-		// Forward `close` and `cancel` events to the host.
-		for (const type of ['close', 'cancel']) {
-			this.#dialog.addEventListener(type, (event) => {
-				if (event.target !== this.#dialog) return;
-				this.dispatchEvent(new Event(type, { ...event, composed: true }));
-			});
+		// Handle closure events of the <dialog> element.
+		const handleClose = (event: Event) => {
+			
+			if (event.target !== this.#dialog) return;
+			
+			// Update the state of the dialog box when closed.
+			this.#isOpen = false;
+			this.#dialog.classList.remove('modal');
+			
+			// Forward the event to the host.
+			this.dispatchEvent(new Event(event.type, { ...event, composed: true }));
+		};
+		for (const type of ['cancel', 'close']) {
+			this.#dialog.addEventListener(type, handleClose);
 		}
 	}
 	
@@ -179,8 +187,6 @@ export class DialogBox extends HTMLElement {
 	close(returnValue?: string | any): void {
 		if (!this.#isOpen) return;
 		
-		this.#isOpen = false;
-		this.#dialog.classList.remove('modal');
 		this.#dialog.close(returnValue);
 	}
 	
@@ -194,10 +200,6 @@ export class DialogBox extends HTMLElement {
 	requestClose(returnValue?: string | any): void {
 		if (!this.#isOpen) return;
 		
-		this.#dialog.addEventListener('close', (event) => {
-			this.#isOpen = false;
-			this.#dialog.classList.remove('modal');
-		});
 		this.#dialog.requestClose(returnValue);
 	}
 }
