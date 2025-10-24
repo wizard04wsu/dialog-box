@@ -85,17 +85,17 @@ const htmlMinifyImportPlugin = {
 export default defineConfig([
   {
     name: 'esm',
-    outDir: "dist/esm",
-    clean: true,  // Empty the "dist/" folder before compiling.
-    dts: true,
-    entry: {
-      index: 'src/index.ts',  // The DialogBox module. The tag name must still be defined.
-      'dialog-box': 'src/dialog-box.ts',  // The DialogBox module, defined as the <dialog-box> custom element.
-    },
     format: ['esm'],
+    outDir: "dist/esm",
+    clean: true,  // Empty the `outDir` folder before compiling.
+    entry: {
+      'dialog-box.mjs': 'src/index.ts',  // Rename output to "dist/esm/dialog-box.msj.js".
+      'dialog-box': 'src/dialog-box.ts',  // Rename output to "dist/esm/dialog-box.js". Class is defined as the <dialog-box> custom element.
+    },
+    dts: false,  // Do not generate type declaration files (*.d.ts).
+    sourcemap: false,  // Do not generate source map files (*.js.map).
     injectStyle: false,
     minify: true,
-    sourcemap: false,
     splitting: false,
     target: 'es2022',
     
@@ -114,17 +114,17 @@ export default defineConfig([
   },
   {
     name: 'dev_esm',
-    clean: true,
-    outDir: "dist/dev_esm",
-    dts: true,
-    entry: {
-      index: 'src/index.ts',  // The DialogBox module. The tag name must still be defined.
-      'dialog-box': 'src/dialog-box.ts',  // The DialogBox module, defined as the <dialog-box> custom element.
-    },
     format: ['esm'],
+    outDir: "dist/dev_esm",
+    clean: true,  // Empty the `outDir` folder before building.
+    entry: {
+      'dialog-box.mjs': 'src/index.ts',  // Rename output to "dist/dev_esm/dialog-box.msj.js".
+      'dialog-box': 'src/dialog-box.ts',  // Rename output to "dist/dev_esm/dialog-box.js". Class is defined as the <dialog-box> custom element.
+    },
+    dts: true,  // Generate type declaration files (*.d.ts).
+    sourcemap: true,  // Generate source map files (*.js.map).
     injectStyle: false,
     minify: false,
-    sourcemap: true,
     splitting: false,
     target: 'es2022',
     
