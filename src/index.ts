@@ -8,7 +8,7 @@ import cssText from './dialog-box.css?minify';
 import htmlText from './dialog-box.html?minify';
 
 // Event types to watch for on the backdrop that should be forwarded to the host element.
-const outsideEventTypes = ['click', 'mousedown', 'mouseup'];
+const backdropEventTypes = ['click', 'mousedown', 'mouseup'];
 
 export class DialogBox extends HTMLElement {
 	
@@ -152,17 +152,17 @@ export class DialogBox extends HTMLElement {
 	/**
 	 * Open the dialog box, modal.
 	 * 
-	 * @param {Function} [outsideEventCallback] - Callback to handle an event on the backdrop, outside of the dialog box.
+	 * @param {Function} [backdropEventCallback] - Callback to handle an event on the backdrop, outside of the dialog box.
 	 */
-	showModal(outsideEventCallback?: Function): void {
+	showModal(backdropEventCallback?: Function): void {
 		if (!this.#inDOM || this.#isOpen) return;
 		
 		this.#dialog.ariaModal = 'true';
 		
-		if (outsideEventCallback instanceof Function) {
+		if (backdropEventCallback instanceof Function) {
 			
 			// Call the handler for relevant events on the backdrop.
-			for (const type of outsideEventTypes) {
+			for (const type of backdropEventTypes) {
 				this.#dialog.addEventListener(type, (event) => {
 					
 					if (event.target !== this.#dialog) return;
@@ -176,7 +176,7 @@ export class DialogBox extends HTMLElement {
 						event.clientY <= rect.bottom;
 					
 					if (!insideDialog) {
-						outsideEventCallback(event);
+						backdropEventCallback(event);
 					}
 				});
 			}
