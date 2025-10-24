@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: index.js</title>
+    <title>JSDoc: Source: define.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: index.js</h1>
+    <h1 class="page-title">Source: define.js</h1>
 
     
 
@@ -157,8 +157,14 @@ var DialogBox = class extends HTMLElement {
   }
 };
 var src_default = DialogBox;
+
+// src/define.ts
+var tag = "dialog-box";
+if (!customElements.get(tag)) {
+  customElements.define(tag, src_default);
+}
 export {
-  DialogBox,
+  src_default as DialogBox,
   src_default as default
 };
 </code></pre>
