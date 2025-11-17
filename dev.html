@@ -8,7 +8,7 @@
 	
 	<title>dialog-box custom element test</title>
 	
-	<script type="module" src="./dist/dev_esm/dialog-box.mjs.js"></script>
+	<!--<script src="./dist/dev_esm/dialog-box.js"></script>
 	<script>
 		window.addEventListener('DOMContentLoaded', () => {
 			document.getElementById('open').addEventListener('click', () => {
@@ -17,6 +17,16 @@
 			document.getElementById('open2').addEventListener('click', () => {
 				document.querySelector('#dlg2').show();
 			});
+		});
+	</script>-->
+	<script type="module">
+		import DialogBox from "./dist/dev_esm/dialog-box.mjs.js";
+		DialogBox.registerTagName(/* here you can set the tag name to something other than the default */);
+		document.getElementById('open').addEventListener('click', () => {
+			document.querySelector('#dlg').showModal();
+		});
+		document.getElementById('open2').addEventListener('click', () => {
+			document.querySelector('#dlg2').show();
 		});
 	</script>
 	

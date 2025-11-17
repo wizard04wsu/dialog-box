@@ -8,12 +8,13 @@ import cssText from './dialog-box.css?minify';
 import htmlText from './dialog-box.html?minify';
 
 // Event types to watch for on the backdrop that should be forwarded to the host element.
-const backdropEventTypes = ['click', 'mousedown', 'mouseup'];
+const outsideEventTypes = ['click', 'mousedown', 'mouseup'];
 
 export class DialogBox extends HTMLElement {
 	
 	#root: ShadowRoot;
 	#dialog!: HTMLDialogElement;
+	#backdrop!: HTMLDivElement;
 	
 	#inDOM: boolean = false;
 	#openedAsModal: boolean = false;
@@ -43,6 +44,7 @@ export class DialogBox extends HTMLElement {
 		if (this.#dialog) return;	// Already initialized.
 		
 		this.#dialog = this.#root.querySelector('dialog')!;
+		this.#backdrop = this.#root.querySelector('#overlay')!;
 		
 		// Handle closure events of the <dialog> element.
 		const handleClose = (event: Event) => {
@@ -75,9 +77,12 @@ export class DialogBox extends HTMLElement {
 	}
 	
 	
-	static registerTagName(tagName?: string) {
-		
-		tagName = tagName || TAGNAME;
+	/**
+	 * Define the custom element for use in HTML.
+	 * 
+	 * @param {string} [tagName] - HTML tag name for the element.
+	 */
+	static registerTagName(tagName: string = TAGNAME) {
 		
 		const name = window.customElements.getName(DialogBox);
 		if (!name) {
@@ -152,17 +157,17 @@ export class DialogBox extends HTMLElement {
 	/**
 	 * Open the dialog box, modal.
 	 * 
-	 * @param {Function} [backdropEventCallback] - Callback to handle an event on the backdrop, outside of the dialog box.
+	 * @param {Function} [outsideEventCallback] - Callback to handle an event on the backdrop, outside of the dialog box.
 	 */
-	showModal(backdropEventCallback?: Function): void {
+	showModal(outsideEventCallback?: Function): void {
 		if (!this.#inDOM || this.#isOpen) return;
 		
 		this.#dialog.ariaModal = 'true';
 		
-		if (backdropEventCallback instanceof Function) {
+		if (outsideEventCallback instanceof Function) {
 			
 			// Call the handler for relevant events on the backdrop.
-			for (const type of backdropEventTypes) {
+			for (const type of outsideEventTypes) {
 				this.#dialog.addEventListener(type, (event) => {
 					
 					if (event.target !== this.#dialog) return;
@@ -176,7 +181,7 @@ export class DialogBox extends HTMLElement {
 						event.clientY <= rect.bottom;
 					
 					if (!insideDialog) {
-						backdropEventCallback(event);
+						outsideEventCallback(event);
 					}
 				});
 			}
@@ -212,6 +217,49 @@ export class DialogBox extends HTMLElement {
 		if (!this.#isOpen) return;
 		
 		this.#dialog.requestClose(returnValue);
+	}
+	
+	
+	private backdropListeners = new Map();
+	
+	addBackdropEventListener(type: keyof HTMLElementEventMap, listener: any, options_useCapture?: object | boolean) {
+		
+		const proxyListener = (event: any) => {
+			
+			if (event.target !== this.#dialog) return;
+			if (!(event instanceof MouseEvent)) return;
+			
+			const rect = this.#dialog.getBoundingClientRect();
+			const insideDialog =
+				event.clientX >= rect.left &&
+				event.clientX <= rect.right &&
+				event.clientY >= rect.top &&
+				event.clientY <= rect.bottom;
+			
+			if (!insideDialog) {
+				const newEvent = new Event(event.type);
+				this.#backdrop?.dispatchEvent(newEvent);
+			}
+		};
+		
+		this.#backdrop?.addEventListener(type, listener, options_useCapture);
+		this.#dialog.addEventListener(type, proxyListener, options_useCapture);
+		
+		if (!this.backdropListeners.has(type)) {
+			this.backdropListeners.set(type, new Map());
+		}
+		this.backdropListeners.get(type).set(listener, proxyListener);
+	}
+	
+	
+	removeBackdropEventListener(type: keyof HTMLElementEventMap, listener: any) {
+		
+		const proxyListener = this.backdropListeners.get(type).get(listener);
+		
+		this.#backdrop?.removeEventListener(type, listener);
+		this.#dialog.removeEventListener(type, proxyListener);
+		
+		this.backdropListeners.get(type).delete(listener);
 	}
 }
 
