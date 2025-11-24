@@ -1,6 +1,6 @@
 <dialog role="dialog">
-	<div id="overlay" part="backdrop"></div>
-	<div id="box"><div id="content" part="dialog"><slot>
+	<div class="dialog-structure-overlay" part="backdrop"></div>
+	<div class="dialog-structure-box"><div class="dialog-structure-content" part="dialog"><slot>
 		<button onclick="this.closest('dialog').close()" style="padding:.5em">❌</button>
 	</slot></div></div>
 </dialog>

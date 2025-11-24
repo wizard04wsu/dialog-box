@@ -44,7 +44,7 @@ export class DialogBox extends HTMLElement {
 		if (this.#dialog) return;	// Already initialized.
 		
 		this.#dialog = this.#root.querySelector('dialog')!;
-		this.#backdrop = this.#root.querySelector('#overlay')!;
+		this.#backdrop = this.#root.querySelector('.dialog-structure-overlay')!;
 		
 		// Handle closure events of the <dialog> element.
 		const handleClose = (event: Event) => {
