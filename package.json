@@ -39,12 +39,12 @@
     "LICENSE"
   ],
   "scripts": {
-    "build:tsup": "cross-env tsup",
-    "build:jsdoc": "jsdoc --destination wiki/docs --readme README.md dist",
-    "build:all": "run-s build:tsup build:jsdoc",
-    "kill:port": "kill-port 5174",
-    "serve:http": "http-server -c-1 -p 5174 .",
-    "dev:serve": "run-s kill:port serve:http"
+    "build:main": "cross-env tsup",
+    "build:docs": "jsdoc --destination wiki/docs --readme README.md dist",
+    "build": "run-s build:main build:docs",
+    "host:kill_port": "kill-port 5174",
+    "host:start_server": "http-server -c-1 -p 5174 .",
+    "host": "run-s host:kill_port host:start_server"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",

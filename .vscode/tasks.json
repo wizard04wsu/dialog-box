@@ -15,7 +15,7 @@
 		{
 			"label": "Build",
 			"type": "npm",
-			"script": "build:all",
+			"script": "build",
 			"group": "build",
 			"presentation": {
 				"clear": true,
@@ -26,7 +26,7 @@
 		{
 			"label": "Host on 5174",
 			"type": "npm",
-			"script": "dev:serve",
+			"script": "host",
 			"presentation": {
 				"clear": true,
 				"reveal": "silent",
