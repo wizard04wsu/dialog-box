@@ -82,31 +82,37 @@ export class DialogBox extends HTMLElement {
 	 * 
 	 * @param {string} [tagName] - HTML tag name for the element.
 	 */
-	static registerTagName(tagName: string = TAGNAME) {
+	static registerTagName(tagName: string = TAGNAME): string {
 		
-		const name = window.customElements.getName(DialogBox);
-		if (!name) {
-			// No custom element is already defined for this class.
+		const registeredTagName = window.customElements.getName(DialogBox);
+		if (registeredTagName) {
+			// DialogBox class is already registered to use this tag name.
+			
+			return registeredTagName;
+		}
+		else {
+			// This class is not yet registered as a custom element.
 			
 			const constructorFn = window.customElements.get(tagName);
 			if (!constructorFn) {
-				// No custom element is already defined with this tag name.
+				// This tag name is available.
 				
 				try {
 					// Define the custom element.
 					window.customElements.define(tagName, DialogBox);
+					
+					return tagName;
 				} catch(e) {
 					throw new Error(`'${tagName}' is not a valid tag name for a custom element`, { cause: e });
 				}
 			}
 			else {
-				throw new Error(`A custom element with tag name '${tagName}' is already defined for class '${constructorFn.name}'`);
+				//TODO: why isn't this error caught by dialog-box.js?
+				const err = new Error(`A custom element with tag name '${tagName}' is already registered for class '${constructorFn.name}'`);
+				err.name = 'ConflictError';
+				throw err;
 			}
 		}
-		else if(name !== tagName) {
-			throw new Error(`A custom element with tag name '${name}' is already defined for class '${DialogBox.name}'`);
-		}
-		// else, it's already defined.
 	}
 	
 	
