@@ -5,14 +5,13 @@ try {
 }
 catch (error: any) {
     
-    const err = error as Error;
-    console.log(error);
+    error = error as Error;
     
-    if (err.name === 'ConflictError') {
+    if (error.name === 'ConflictError') {
         // There was a conflict registering the tag name.
         
         // Continue, assuming the name was registered by a previous initialization of this script.
-        console.debug(err.message);
+        console.debug(error.message);
     }
     else {
         throw error;
