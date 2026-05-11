@@ -1,6 +1,7 @@
 import DialogBox from './index.js';
 
 try {
+    // Attempt to register the custom element.
     DialogBox.registerTagName();
 }
 catch (error: any) {
@@ -16,4 +17,9 @@ catch (error: any) {
     else {
         throw error;
     }
+}
+
+export {
+    DialogBox as default,
+    DialogBox,
 }

@@ -1,24 +1,24 @@
 {
   "compilerOptions": {
+    // Emit modern JavaScript syntax.
     "target": "ES2022",
-    "module": "ES2020",
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "moduleResolution": "Bundler",
-    "declaration": true,
-    "declarationDir": "./dist",
+
+    // Let the bundler (tsup/esbuild) handle modules.
+    "module": "ESNext",
+
+    // Expose modern APIs and browsers' DOMs to TypeScript.
+    "lib": ["ES2022", "DOM"],
+
     "strict": true,
+    "declaration": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "allowJs": true,
-    "noEmit": false,
-    "outDir": "./dist",
-    "types": []
+    
+    "rootDir": "src",
+    "outDir": "dist",
+    
+    "types": [],
   },
-  "include": [
-    "src",
-    "dev.html"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "dev.html"],
 }
